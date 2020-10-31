@@ -55,17 +55,21 @@ Azure の無料試用版は、[https://azure.microsoft.com/ja-jp/free/](https://
 
 > **注意**: 繰り返しにはなりますが、特定のCognitive Servicesリソースを作成することも、すべてのエンドポイントを含む単一のリソースを作成することもできます。
 
-1. 自分で選択した名前を入力してください
+1. サブスクリプションを選択します
 
-1. 添え字とリソース グループを選択してください
+1. 「**ai-100**」リソースグループを新規作成します
 
-1. 価格帯については、 **S0**を選択します
+1. 任意の名前を入力してください
+
+1. 価格レベルについては、 **Standard S0**を選択します
 
 1. 確認チェックボックスをオンにします
 
+1. 「**確認および作成**」を選択します
+
 1. 「**作成**」を選択します
 
-1. 新しいリソースに移動し、左側のツールバーの 「**リソース管理**」 セクションで、「**キーとエンドポイント**」 を選択します。
+1. 作成したリソースに移動し、左側のツールバーの 「**リソース管理**」 セクションで、「**キーとエンドポイント**」 を選択します。
 
 1. **API Key** をコピーして、メモ帳に **エンドポイントの URL** を貼り付けます
 
@@ -77,25 +81,23 @@ Azure の無料試用版は、[https://azure.microsoft.com/ja-jp/free/](https://
 
 1. 利用可能なオプションから「**ストレージ アカウント**」を選択し、「**作成**」をクリックします
 
-1. 添え字とリソース グループを選択してください
+1. サブスクリプションとリソース グループを選択してください
 
-1. アカウントの一意の名前を入力します。
+1. 一意の名前を入力します
 
 1. 場所には、リソース グループと同じものを選択します
 
-1. パフォーマンスは **Standard** である必要があります
+1. パフォーマンスは **Standard**、アカウントの種類は **StorageV2（汎用v2）** を選択します
 
-1. アカウントの種類は **StorageV2（汎用v2）** である必要があります
-
-1. レプリケーションの場合、「**ローカル冗長ストレージ(LRS)**」 を選択します
+1. レプリケーションは、「**ローカル冗長ストレージ(LRS)**」 を選択します
 
     ![ストレージ アカウントの値が表示されます](../images/lab01-storageaccount.png 'Create a storage account')
 
-1. **Review + create**を選択する
+1. **確認および作成**を選択します
 
-1. 「作成」**を選択します**
+1. 「**作成**」を選択します
 
-1. 新しいリソースに移動し、「**アクセス キー**」をクリックします
+1. 作成したリソースに移動し、「**アクセス キー**」をクリックします
 
 1. **接続文字列**をメモ帳にコピーします
 
@@ -105,17 +107,19 @@ Azure の無料試用版は、[https://azure.microsoft.com/ja-jp/free/](https://
 
     ![概要とコンテナーのリンクが強調表示されます](../images/lab01-storageaccountcontainers.png 'Open the storage account containers')
 
-1. **+ コンテナー**を選択します
+1. 左側のメニューから**+ コンテナー**を選択します
 
-1. 名前に「**images**」と入力します
+1. 「+コンテナー」をクリックし、名前に「**images**」と入力します
 
     ![コンテナー ボタンが強調表示され、コンテナー名が入力されます  「OK」ボタンも強調表示されます。](../images/lab01-storageaccountcontainercreate.png 'Create a container called images')
 
-1. 「**OK**」を選択します
+1. パブリックアクセスレベルは「プライベート」のままにします
+
+1. 「**作成**」を選択します
 
 #### Cosmos DB
 
-1. [Azure Portal](https://portal.azure.com) を開く
+1. [Azure Portal](https://portal.azure.com) を開きます
 
 1. 「**+リソースの作成**」をクリックし、検索ボックスに「**cosmos**」と入力します
 
@@ -123,21 +127,21 @@ Azure の無料試用版は、[https://azure.microsoft.com/ja-jp/free/](https://
 
 1. 「**作成**」を選択します
 
-1. 添え字とリソース グループを選択してください
+1. サブスクリプションとリソース グループを選択してください
 
 1. 一意のアカウント名を入力してください
 
-1. リソース グループに一致する場所を選択します
+1. リソース グループと一致する場所を選択します
 
     ![cosmosdb の作成の詳細が設定されます](../images/lab01-cosmoscreate.png 'Create a cosmosdb resource')
 
-1. **Review + create**を選択する
+1. **確認と作成**を選択します
 
 1. 「**作成**」を選択します
 
-1. 新しいリソースに移動し、「**設定**」 で 「**キー**」 を選択します
+1. 作成したリソースに移動し、左側のメニューから 「**キー**」 を選択します
 
-1. **URI** と**主キー**をメモ帳にコピーします
+1. **URI** と**プライマリキー**をメモ帳にコピーします
 
 ### Bot Builder SDK
 
@@ -145,15 +149,15 @@ Azure の無料試用版は、[https://azure.microsoft.com/ja-jp/free/](https://
 
 #### Bot Builder SDK のダウンロード
 
-1. [ここから C# 用の Bot Builder SDK v4 テンプレート](https://marketplace.visualstudio.com/items?itemName=BotBuilder.botbuilderv4)のブラウザー ウィンドウを開きます
+1. ブラウザで[C# 用の Bot Builder SDK v4 テンプレート](https://marketplace.visualstudio.com/items?itemName=BotBuilder.botbuilderv4)を開きます
 
 1. 「**ダウンロード**」を選択します。
 
-1. ダウンロード フォルダの場所に移動し、インストールをダブルクリックします。
+1. ダウンロード フォルダに移動し、インストーラーをダブルクリックします。
 
-1. Visual Studio のすべてのバージョンが選択されていることを確認し、「**インストール**」をクリックします。  プロンプトが出されたら、「**タスクの終了**」をクリックします。  
+1. Visual Studio のすべてのバージョンが選択されていることを確認し、「**Install**」をクリックします。  プロンプトが出されたら、「**End Tasks**」をクリックします。  
 
-1. 「**閉じる**」を選択します。これで、Visual Studio テンプレートにボット テンプレートが追加されました。
+1. 「**Close**」を選択します。これで、Visual Studio テンプレートにボット テンプレートが追加されました。
 
 ### Bot Emulator
 
@@ -163,10 +167,12 @@ Azure の無料試用版は、[https://azure.microsoft.com/ja-jp/free/](https://
 
 ボットをローカルでテストするために、v4 Bot Framework Emulator をダウンロードできます。ラボの残りの部分の手順では、v4 Emulator をダウンロードしていることを前提とします。
 
-1. エミュレーターをダウンロードするには、[このページ](https://github.com/Microsoft/BotFramework-Emulator/releases)にアクセスし、"4.6.0" というタグが付いている最新バージョンのエミュレーターをダウンロードします (Windows を使用している場合は、 "*-windows-setup.exe" ファイルを選択します)。
+1. エミュレーターをダウンロードするには、[このページ](https://github.com/Microsoft/BotFramework-Emulator/releases)にアクセスし、最新バージョンのエミュレーターをダウンロードします (Windows を使用している場合は、 "*-windows-setup.exe" ファイルを選択します)。
+
+1. インストーラーをダウンロード後、「Only for me」を選択し、インストールを行います
 
 > **注:** エミュレーターは、
-`"C:\Users\_your-username\AppData\Local\Programs\@bfemulatormain\Bot Framework Emulator.exe"` にインストールされますが、**ボット フレームワーク**を検索することで、スタートメニューからアクセスできます。
+`"C:\Users\_your-username\AppData\Local\Programs\@bfemulatormain\Bot Framework Emulator.exe"` にインストールされますが、**Bot Framework**を検索することで、スタートメニューからアクセスできます。
 
 ## クレジット
 
