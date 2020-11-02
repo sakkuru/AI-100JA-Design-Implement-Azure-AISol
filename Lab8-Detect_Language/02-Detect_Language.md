@@ -1,4 +1,4 @@
-﻿# ラボ 8 - 言語を検出する
+﻿# ラボ 8: 言語を検出する
 
 このラボでは、Cognitive Services の言語検出機能をボットに統合します。
 
@@ -6,9 +6,9 @@
 
 1. [Azure Portal](https://portal.azure.com) を開く
 
-1. リソース グループに移動し、汎用的な Cognitive Services リソースを選択します (別名、すべてのエンド ポイントが含まれます)。
+1. リソース グループに移動し、ラボ1で作成した汎用的な Cognitive Services リソースを選択します。
 
-1. 「**リソース管理**」 の 「**クイック スタート**」  タブを選択し、Cognitive Services リソースの URL とキーを記録します。
+1. 「**リソース管理**」 の 「**キーとエンドポイント**」 メニューを選択し、Cognitive Services リソースの URL とキーを記録します。
 
 ## ラボ 8.2: ボットに言語サポートを追加する
 
@@ -22,93 +22,94 @@
 
 1. **Startup.cs** ファイルを開き、次の using ステートメントを追加します。
 
-```csharp
-using Microsoft.Azure.CognitiveServices.Language.TextAnalytics;
-using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
-using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime;
-```
+    ```csharp
+    using Microsoft.Azure.CognitiveServices.Language.TextAnalytics;
+    using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
+    using Microsoft.Azure.CognitiveServices.Language.LUIS.Runtime;
+    ```
 
 1. 次のコードを **ConfigureServices** メソッドに追加します。
 
-```csharp
-services.AddSingleton(sp =>
-{
-    string cogsBaseUrl = Configuration.GetSection("cogsBaseUrl")?.Value;
-    string cogsKey = Configuration.GetSection("cogsKey")?.Value;
-
-    var credentials = new ApiKeyServiceClientCredentials(cogsKey);
-    TextAnalyticsClient client = new TextAnalyticsClient(credentials)
+    ```csharp
+    services.AddSingleton(sp =>
     {
-        Endpoint = cogsBaseUrl
-    };
+        string cogsBaseUrl = Configuration.GetSection("cogsBaseUrl")?.Value;
+        string cogsKey = Configuration.GetSection("cogsKey")?.Value;
 
-    return client;
-});
-```
+        var credentials = new ApiKeyServiceClientCredentials(cogsKey);
+        TextAnalyticsClient client = new TextAnalyticsClient(credentials)
+        {
+            Endpoint = cogsBaseUrl
+        };
+
+        return client;
+    });
+    ```
 
 1. **PictureBot.cs** ファイルを開き、次の using ステートメントを追加します。
 
-```csharp
-using Microsoft.Azure.CognitiveServices.Language.TextAnalytics;
-using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
-```
+    ```csharp
+    using Microsoft.Azure.CognitiveServices.Language.TextAnalytics;
+    using Microsoft.Azure.CognitiveServices.Language.TextAnalytics.Models;
+    ```
 
 1. 次のクラス変数を追加します。
 
-```csharp
-private TextAnalyticsClient _textAnalyticsClient;
-```
+    ```csharp
+    private TextAnalyticsClient _textAnalyticsClient;
+    ```
 
 1. コンストラクタを変更して、新しい TextAnalyticsClient を含めます。
 
-```csharp
-public PictureBot（PictureBotAccessors accessors, ILoggerFactory loggerFactory, LuisRecognizer recognizer, TextAnalyticsClient analyticsClient）
-```
+    ```csharp
+    public PictureBot(PictureBotAccessors accessors, ILoggerFactory loggerFactory, LuisRecognizer recognizer, TextAnalyticsClient analyticsClient)
+    ```
 
 1. コンストラクター内で、クラス変数を初期化します。
 
-```csharp
-_textAnalyticsClient = analyticsClient;
-```
+    ```csharp
+    _textAnalyticsClient = analyticsClient;
+    ```
 
 1. **OnTurnAsync** メソッドに移動し、次のコード行を見つけます。
 
-```csharp
-var utterance = turnContext.Activity.Text;
-var state = await _accessors.PictureState.GetAsync(turnContext, () => new PictureState());
-state.UtteranceList.Add(utterance);
-await _accessors.ConversationState.SaveChangesAsync(turnContext);
-```
+    ```csharp
+    var utterance = turnContext.Activity.Text;
+    var state = await _accessors.PictureState.GetAsync(turnContext, () => new PictureState());
+    state.UtteranceList.Add(utterance);
+    await _accessors.ConversationState.SaveChangesAsync(turnContext);
+    ```
 
-1. その後、次のコード行を追加します
+1. その後に、次のコード行を追加します
 
-```csharp
-//言語を確認する
-var result = _textAnalyticsClient.DetectLanguage(turnContext.Activity.Text, "us");
+    ```csharp
+    //言語を確認する
+    var result = _textAnalyticsClient.DetectLanguage(turnContext.Activity.Text, "us");
 
-switch (result.DetectedLanguages[0].Name)
-{
-    case "English":
-        break;
-    default:
-        //エラーを発生する
-        await turnContext.SendActivityAsync($"申し訳ありませんが英語しか理解できません。[{result.DetectedLanguages[0].Name}]");
-        return;
-        break;
-}
-```
+    switch (result.DetectedLanguages[0].Name)
+    {
+        case "English":
+            break;
+        default:
+            //エラーを発生する
+            await turnContext.SendActivityAsync($"I'm sorry, I can only understand English. [{result.DetectedLanguages[0].Name}]");
+            return;
+            break;
+    }
+    ```
 
 1. **appsettings.json** ファイルを開き、Cognitive Services の設定が入力されていることを確認します。
 
-```csharp
-"cogsBaseUrl": "",
-"cogsKey" :  ""
-```
+    ```csharp
+    "cogsBaseUrl": "",
+    "cogsKey" :  ""
+    ```
 
 1. **F5** を押してボットを開始します
 
 1. ボット エミュレーターを使用して、複数のフレーズを送信し、何が起こるかを確認します。
 
+- こんにちは
 - Como Estes?
 - Bon Jour!
 - Привет
