@@ -1,4 +1,4 @@
-﻿# 課題 9: DirectLine でボットをテストする
+﻿# ラボ 9: DirectLine でボットをテストする
 
 ## 紹介
 
@@ -49,9 +49,9 @@ Microsoft Bot Framework DirectLine ボットは、独自の設計のカスタム
 
 1. 使用しているサブスクリプションを選択します
 
-1. リソース グループを展開し、ラボ 3 で作成した画像ボット アプリ サービスを選択します。
+1. リソース グループを展開し、ラボ 3 で作成したPictureBot アプリ サービスを選択します。
 
-1. 「**OK**」を選択します。
+1. 「**Publish**」を選択します。
 
 > **注**: このラボへのアクセスにかかったパスによっては、2回目の公開が必要になる場合があります。  ボットを再公開します。今回は、公開設定を変更して既存のファイルを削除します。  
 
@@ -77,7 +77,7 @@ Microsoft Bot Framework DirectLine ボットは、独自の設計のカスタム
 
 1. **Console App (.NET Core)** を検索して選択し、「**次へ**」をクリックします
 
-1. 名前として「 **ピクチャボットDL**」と入力します。
+1. 名前として「 **PictureBotDL**」と入力します。
 
 1. **「作成」** を選択します。
 
@@ -94,175 +94,175 @@ Microsoft Bot Framework DirectLine ボットは、独自の設計のカスタム
 
 1. (PictureBotDL 内の) **Program.cs** の内容を次のように置き換えます。
 
-```csharp
-using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Bot.Connector.DirectLine;
-using Newtonsoft.Json;
-using Activity = Microsoft.Bot.Connector.DirectLine.Activity;
+    ```csharp
+    using System;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Microsoft.Bot.Connector.DirectLine;
+    using Newtonsoft.Json;
+    using Activity = Microsoft.Bot.Connector.DirectLine.Activity;
 
-namespace PictureBotDL
-{
-    class Program
+    namespace PictureBotDL
     {
-        // ************
-        // 次の値を DirectLine の秘密とボット リソース ID の名前に置き換えます。
-        //*************
-        private static string directLineSecret = "YourDLSecret";
-        private static string botId = "YourBotServiceName";
-
-        // これにより、ボット ユーザーに名前が付けられます。
-        private static string fromUser = "PictureBotSampleUser";
-
-        static void Main(string[] args)
+        class Program
         {
-            StartBotConversation().Wait();
-        }
+            // ************
+            // 次の値を DirectLine の秘密とボット リソース ID の名前に置き換えます。
+            //*************
+            private static string directLineSecret = "YourDLSecret";
+            private static string botId = "YourBotServiceName";
 
+            // これにより、ボット ユーザーに名前が付けられます。
+            private static string fromUser = "PictureBotSampleUser";
 
-        /// <summary>
-        // ボットとのユーザーの会話を促進します。
-        /// </summary>
-        /// <returns></returns>
-        private static async Task StartBotConversation()
-        {
-            // 新しい DirectLine クライアントを作成します。
-            DirectLineClient client = new DirectLineClient(directLineSecret);
-
-            // 会話を開始します。
-            var conversation = await client.Conversations.StartConversationAsync();
-
-            // ボット メッセージ リーダーを別のスレッドで起動します。
-            new System.Threading.Thread(async () => await ReadBotMessagesAsync(client, conversation.ConversationId)).Start();
-
-            // ボットとの会話を開始するようにユーザーに求めます。
-            Console.Write("Conversation ID: " + conversation.ConversationId + Environment.NewLine);
-            Console.Write("Type your message (or \"exit\" to end): ");
-
-            // ユーザーがこのループを終了するまでループします。
-            while (true)
+            static void Main(string[] args)
             {
-                // ユーザーからの入力を受け入れます。
-                string input = Console.ReadLine().Trim();
-
-                // ユーザーが終了するかどうかを確認します。
-                if (input.ToLower() == "exit")
-                {
-                    // ユーザーが要求した場合は、アプリを終了します。
-                    break;
-                }
-                else
-                {
-                    if (input.Length > 0)
-                    {
-                        // ユーザーが入力したテキストを使用してメッセージ アクティビティを作成します。
-                        Activity userMessage = new Activity
-                        {
-                            From = new ChannelAccount(fromUser),
-                            Text = input,
-                            Type = ActivityTypes.Message
-                        };
-
-                        // ボットにメッセージ アクティビティを送信します。
-                        await client.Conversations.PostActivityAsync(conversation.ConversationId, userMessage);
-                    }
-                }
+                StartBotConversation().Wait();
             }
-        }
 
 
-        /// <summary>
-        // ボットを継続的にポーリングし、ボットからクライアントに送信されたメッセージを取得します。
-        /// </summary>
-        /// <param name="client">Direct Line クライアント。</param>
-        /// <param name="conversationId">会話 ID。</param>
-        /// <returns></returns>
-        private static async Task ReadBotMessagesAsync(DirectLineClient client, string conversationId)
-        {
-            string watermark = null;
-
-            // 1 秒に 1 回、ボットに返信をポーリングします。
-            while (true)
+            /// <summary>
+            // ボットとのユーザーの会話を促進します。
+            /// </summary>
+            /// <returns></returns>
+            private static async Task StartBotConversation()
             {
-                // ボットからアクティビティ セットを取得します。
-                var activitySet = await client.Conversations.GetActivitiesAsync(conversationId, watermark);
-                watermark = activitySet?.Watermark;
+                // 新しい DirectLine クライアントを作成します。
+                DirectLineClient client = new DirectLineClient(directLineSecret);
 
-                // ボットから送信されたアクティビティを抽出します。
-                var activities = from x in activitySet.Activities
-                                 where x.From.Id == botId
-                                 select x;
+                // 会話を開始します。
+                var conversation = await client.Conversations.StartConversationAsync();
 
-                // アクティビティ セット内の各アクティビティを分析します。
-                foreach (Activity activity in activities)
+                // ボット メッセージ リーダーを別のスレッドで起動します。
+                new System.Threading.Thread(async () => await ReadBotMessagesAsync(client, conversation.ConversationId)).Start();
+
+                // ボットとの会話を開始するようにユーザーに求めます。
+                Console.Write("Conversation ID: " + conversation.ConversationId + Environment.NewLine);
+                Console.Write("Type your message (or \"exit\" to end): ");
+
+                // ユーザーがこのループを終了するまでループします。
+                while (true)
                 {
-                    // アクティビティのテキストを表示します。
-                    Console.WriteLine(activity.Text);
+                    // ユーザーからの入力を受け入れます。
+                    string input = Console.ReadLine().Trim();
 
-                    // 添付ファイルはありますか?
-                    if (activity.Attachments != null)
+                    // ユーザーが終了するかどうかを確認します。
+                    if (input.ToLower() == "exit")
                     {
-                        // アクティビティから各添付ファイルを抽出します。
-                        foreach (Attachment attachment in activity.Attachments)
+                        // ユーザーが要求した場合は、アプリを終了します。
+                        break;
+                    }
+                    else
+                    {
+                        if (input.Length > 0)
                         {
-                            switch (attachment.ContentType)
+                            // ユーザーが入力したテキストを使用してメッセージ アクティビティを作成します。
+                            Activity userMessage = new Activity
                             {
-                                // ヒーロー カードを表示します。
-                                case "application/vnd.microsoft.card.hero":
-                                    RenderHeroCard(attachment);
-                                    break;
+                                From = new ChannelAccount(fromUser),
+                                Text = input,
+                                Type = ActivityTypes.Message
+                            };
 
-                                // ブラウザーにイメージを表示します。
-                                case "image/png":
-                                    Console.WriteLine($"Opening the requested image '{attachment.ContentUrl}'");
-                                    Process.Start(attachment.ContentUrl);
-                                    break;
-                            }
+                            // ボットにメッセージ アクティビティを送信します。
+                            await client.Conversations.PostActivityAsync(conversation.ConversationId, userMessage);
                         }
                     }
-
                 }
-
-                // ボットを再度ポーリングする前に、1 秒間待ちます。
-                await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
             }
-        }
 
 
-        /// <summary>
-        // コンソールにヒーロー カードを表示します。
-        /// </summary>
-        /// <param name="attachment">ヒーロー カードが含まれる添付ファイル。</param>
-        private static void RenderHeroCard(Attachment attachment)
-        {
-            const int Width = 70;
-            // アスタリスクで囲まれた文字列を中央揃えする関数。
-            Func<string, string> contentLine = (content) => string.Format($"{{0, -{Width}}}", string.Format("{0," + ((Width + content.Length) / 2).ToString() + "}", content));
-
-            // ヒーロー カード データを抽出します。
-            var heroCard = JsonConvert.DeserializeObject<HeroCard>(attachment.Content.ToString());
-
-            // ヒーロー カードを表示します。
-            if (heroCard != null)
+            /// <summary>
+            // ボットを継続的にポーリングし、ボットからクライアントに送信されたメッセージを取得します。
+            /// </summary>
+            /// <param name="client">Direct Line クライアント。</param>
+            /// <param name="conversationId">会話 ID。</param>
+            /// <returns></returns>
+            private static async Task ReadBotMessagesAsync(DirectLineClient client, string conversationId)
             {
-                Console.WriteLine("/{0}", new string('*', Width + 1));
-                Console.WriteLine("*{0}*", contentLine(heroCard.Title));
-                Console.WriteLine("*{0}*", new string(' ', Width));
-                Console.WriteLine("*{0}*", contentLine(heroCard.Text));
-                Console.WriteLine("{0}/", new string('*', Width + 1));
+                string watermark = null;
+
+                // 1 秒に 1 回、ボットに返信をポーリングします。
+                while (true)
+                {
+                    // ボットからアクティビティ セットを取得します。
+                    var activitySet = await client.Conversations.GetActivitiesAsync(conversationId, watermark);
+                    watermark = activitySet?.Watermark;
+
+                    // ボットから送信されたアクティビティを抽出します。
+                    var activities = from x in activitySet.Activities
+                                    where x.From.Id == botId
+                                    select x;
+
+                    // アクティビティ セット内の各アクティビティを分析します。
+                    foreach (Activity activity in activities)
+                    {
+                        // アクティビティのテキストを表示します。
+                        Console.WriteLine(activity.Text);
+
+                        // 添付ファイルはありますか?
+                        if (activity.Attachments != null)
+                        {
+                            // アクティビティから各添付ファイルを抽出します。
+                            foreach (Attachment attachment in activity.Attachments)
+                            {
+                                switch (attachment.ContentType)
+                                {
+                                    // ヒーロー カードを表示します。
+                                    case "application/vnd.microsoft.card.hero":
+                                        RenderHeroCard(attachment);
+                                        break;
+
+                                    // ブラウザーにイメージを表示します。
+                                    case "image/png":
+                                        Console.WriteLine($"Opening the requested image '{attachment.ContentUrl}'");
+                                        Process.Start(attachment.ContentUrl);
+                                        break;
+                                }
+                            }
+                        }
+
+                    }
+
+                    // ボットを再度ポーリングする前に、1 秒間待ちます。
+                    await Task.Delay(TimeSpan.FromSeconds(1)).ConfigureAwait(false);
+                }
+            }
+
+
+            /// <summary>
+            // コンソールにヒーロー カードを表示します。
+            /// </summary>
+            /// <param name="attachment">ヒーロー カードが含まれる添付ファイル。</param>
+            private static void RenderHeroCard(Attachment attachment)
+            {
+                const int Width = 70;
+                // アスタリスクで囲まれた文字列を中央揃えする関数。
+                Func<string, string> contentLine = (content) => string.Format($"{{0, -{Width}}}", string.Format("{0," + ((Width + content.Length) / 2).ToString() + "}", content));
+
+                // ヒーロー カード データを抽出します。
+                var heroCard = JsonConvert.DeserializeObject<HeroCard>(attachment.Content.ToString());
+
+                // ヒーロー カードを表示します。
+                if (heroCard != null)
+                {
+                    Console.WriteLine("/{0}", new string('*', Width + 1));
+                    Console.WriteLine("*{0}*", contentLine(heroCard.Title));
+                    Console.WriteLine("*{0}*", new string(' ', Width));
+                    Console.WriteLine("*{0}*", contentLine(heroCard.Text));
+                    Console.WriteLine("{0}/", new string('*', Width + 1));
+                }
             }
         }
     }
-}
-```
+    ```
 
-> **注**: このコードは、次のラボのセクションで使用するいくつかの項目が含まれるように、[ドキュメント](https://docs.microsoft.com/ja-jp/azure/bot-service/bot-builder-howto-direct-line?view=azure-bot-service-4.0&tabs=cscreatebot%2Ccsclientapp%2Ccsrunclient#create-the-console-client-app)から少し変更されました。
+    > **注**: このコードは、次のラボのセクションで使用するいくつかの項目が含まれるように、[ドキュメント](https://docs.microsoft.com/ja-jp/azure/bot-service/bot-builder-howto-direct-line?view=azure-bot-service-4.0&tabs=cscreatebot%2Ccsclientapp%2Ccsrunclient#create-the-console-client-app)から少し変更されました。
 
-1. **Program.cs** で、直接回線シークレットとボット ID を特定の値に更新します。
+1. **Program.cs** で、DirectLineシークレットとボット ID を特定の値に更新します。
 
-少し時間を取って、このサンプル コードを確認してください。これは、PictureBot に接続して応答を得る方法を理解していることを確認するための良い練習です。
+    少し時間を取って、このサンプル コードを確認してください。これは、PictureBot に接続して応答を得る方法を理解していることを確認するための良い練習です。
 
 ### クライアント アプリを実行します。
 
@@ -272,11 +272,11 @@ namespace PictureBotDL
 
 1. コマンドライン アプリケーションを使用してボットと会話する
 
-![コンソール アプリ](../images//consoleapp.png)
+    ![コンソール アプリ](../images//consoleapp.png)
 
-> **注**: 応答がない場合、ボットにエラーがある可能性があります。ボット エミュレーターを使用してボットをローカルでテストし、問題を修正してから再公開します。
+    > **注**: 応答がない場合、ボットにエラーがある可能性があります。ボット エミュレーターを使用してボットをローカルでテストし、問題を修正してから再公開します。
 
-クイック クイズ - 会話 ID を表示する方法は? 次のセクションでは、これが必要な理由について説明します。
+    クイック クイズ - 会話 ID を表示する方法は? 次のセクションでは、これが必要な理由について説明します。
 
 ## ラボ 9.4: HTTP Get を使用してメッセージを取得する
 
@@ -300,7 +300,7 @@ Postman により、これが非常に簡単に行えます。
 - 会話 ID で要求 URL を入力します。
 - 「Bearer Token」 (ベアラー トークン) と入力するように「Authorization」を変更し、「トークン」ボックスに DirectLine 秘密鍵を入力します。
 
-![ベアラー トークン](../images//bearer.png)
+    ![ベアラー トークン](../images//bearer.png)
 
 1. **Postman** を開く
 
@@ -308,21 +308,21 @@ Postman により、これが非常に簡単に行えます。
 
 1. URL に **https://directline.botframework.com/api/conversations/{conversationId}/messages** と入力します 。  converstationId を特定の会話 ID に必ず置き換えてください
 
-1. 「**承認**」をクリックして、タイプに「**ベアラー トークン**」を選択します。
+1. 「**Auth**」をクリックして、TYPEに「**Bearer Token**」を選択します。
 
 1. 値を **{Your Direct Line Secret}** に設定します
 
-1. 最後に、「**送信**」を選択します。
+1. 最後に、「**Send**」を選択します。
 
 1. 結果を調べます。
 
-1. コンソール アプリで新しい会話を作成し、必ずイメージを検索します。
+1. コンソール アプリで新しい会話を作成し、イメージを検索します。
 
 1. 新しい会話 ID を使用して、Postman を使って新しい要求を作成します。
 
 1. 返された応答を検査します。  応答の画像配列内に表示されている画像の URL を見つけてください。
 
-![イメージ配列の例](../images//imagesarray.png)
+    ![イメージ配列の例](../images//imagesarray.png)
 
 ## さらに進む
 

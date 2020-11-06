@@ -44,8 +44,6 @@ Bing Search を使用して、顧客がボットとの対話中に他のデー�
 
 このアーキテクチャはこのラボの範囲外ですが、[Blob Storage](https://docs.microsoft.com/ja-jp/azure/storage/storage-dotnet-how-to-use-blobs) と [Cosmos DB](https://azure.microsoft.com/ja-jp/services/cosmos-db/) によって、イメージとメタデータのストレージを管理する Azure データ ソリューションをこのアーキテクチャに統合します。
 
-![アーキテクチャ図](../images/AI_Immersion_Arch.png)
-
 ### アーキテクチャ
 
 あなたのチームでは最近、Adventure Works の承認を得た潜在的なアーキテクチャ (以下) を提示しました。
