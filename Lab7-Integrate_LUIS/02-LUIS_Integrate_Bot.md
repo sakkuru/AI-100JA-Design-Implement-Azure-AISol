@@ -24,12 +24,11 @@ LUIS を使用するには、ボットを更新する必要があります。  �
     以下の下の行に、
 
     ```csharp
-    services.AddSingleton((Func<IServiceProvider, PictureBotAccessors>)(sp =>
+    services.AddSingleton<PictureBotAccessors>(sp =>
     {
         .
         .
         .
-        return accessors;
     });
     ```
 
@@ -70,7 +69,7 @@ LUIS を使用するには、ボットを更新する必要があります。  �
 
 ## ラボ 7.2: LUIS の PictureBot の MainDialog への追加
 
-1. **PictureBot.cs** を開きます。最初に行う必要があるのは、`PictureBotAccessors`で行ったのと同様に、LUIS 認識エンジンを初期化することです。コメント行`// LUIS 認識エンジンを初期化する(Initialize LUIS Recognizer)`の下に、次の操作を追加します。
+1. **PictureBot.cs** を開きます。最初に行う必要があるのは、`PictureBotAccessors`で行ったのと同様に、LUIS 認識エンジンを初期化することです。`private readonly PictureBotAccessors _accessors;`の下に、次のコードを追加します。
 
     ```csharp
     private LuisRecognizer _recognizer { get; } = null;
@@ -92,6 +91,18 @@ LUIS を使用するには、ボットを更新する必要があります。  �
 
     ```csharp
     public PictureBot(PictureBotAccessors accessors, LuisRecognizer recognizer)
+    ```
+
+1. コンストラクタの先頭に以下のコードを追加します。
+
+    ```csharp
+    _recognizer = recognizer ?? throw new ArgumentNullException(nameof(recognizer));
+    ```
+
+1. 以下のusing句を追加します。
+
+    ```csharp
+    using System;
     ```
 
     繰り返しますが、これは`_accessors`のインスタンスを初期化した方法と非常によく似ています。
