@@ -112,6 +112,11 @@ Microsoft Bot Framework を使用して作成されたボットは、パブリ�
 
     プロンプトが表示されない場合は、クラスの名前を手動で変更してから、クラスのすべての参照を **PictureBot** に変更する必要があります。  プロジェクトをビルドしようとすると、見逃したかどうかがわかります。
 
+1. Startup.csの36行目付近の行を以下のように書き換えます。
+    ```
+    services.AddTransient<IBot, PictureBot.Bots.PictureBot>();
+    ```
+
 1. プロジェクトを右クリックして、「 **Nuget Packagaesの管理(Manage Nuget Packages)** 」を選択します
 
 1. 「**参照(Browse)**」タブをクリックし、次のパッケージをインストールします。
