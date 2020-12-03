@@ -21,17 +21,6 @@ LUIS を使用するには、ボットを更新する必要があります。  �
 
 1. 「**Startup.cs**」 を開き、`ConfigureServices`メソッドを見つけます。ここで、状態アクセサーを作成して登録した後、LUIS 用の追加サービスを追加して、LUIS を追加します。
 
-    以下の下の行に、
-
-    ```csharp
-    services.AddSingleton<PictureBotAccessors>(sp =>
-    {
-        .
-        .
-        .
-    });
-    ```
-
     下記のように追加します。
 
     ```csharp
