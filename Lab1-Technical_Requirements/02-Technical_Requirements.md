@@ -71,7 +71,7 @@ Azure の無料試用版は、[https://azure.microsoft.com/ja-jp/free/](https://
 
 1. 作成したリソースに移動し、左側のツールバーの 「**リソース管理**」 セクションで、「**キーとエンドポイント**」 を選択します。
 
-1. **API Key** をコピーして、メモ帳に **エンドポイントの URL** を貼り付けます
+1. **キー1** と **エンドポイント** をコピーして、メモ帳に貼り付けます
 
     ![クイックスタートと Key1 とエンドポイントの値が強調表示されます](../images/lab01-cogskeys.png 'The service key and endpoint values are highlighted')
 
@@ -99,7 +99,9 @@ Azure の無料試用版は、[https://azure.microsoft.com/ja-jp/free/](https://
 
 1. 作成したリソースに移動し、「**アクセス キー**」をクリックします
 
-1. **接続文字列**をメモ帳にコピーします
+1. **キーの表示** をクリックします。
+
+1. **key1** の **接続文字列**をメモ帳にコピーします
 
     ![アクセス キーと接続文字列の値が強調表示されます](../images/lab01-storageaccountkeys.png 'Copy the connection string')
 
@@ -151,13 +153,13 @@ Azure の無料試用版は、[https://azure.microsoft.com/ja-jp/free/](https://
 
 1. ブラウザで[C# 用の Bot Builder SDK v4 テンプレート](https://marketplace.visualstudio.com/items?itemName=BotBuilder.botbuilderv4)を開きます
 
-1. 「**ダウンロード**」を選択します。
+1. 「**Download**」を選択します。
 
 1. ダウンロード フォルダに移動し、インストーラーをダブルクリックします。
 
 1. Visual Studio のすべてのバージョンが選択されていることを確認し、「**Install**」をクリックします。  プロンプトが出されたら、「**End Tasks**」をクリックします。  
 
-1. 「**Close**」を選択します。これで、Visual Studio テンプレートにボット テンプレートが追加されました。
+1. インストールが完了したら「**Close**」を選択します。これで、Visual Studio テンプレートにボット テンプレートが追加されました。
 
 ### Bot Emulator
 
