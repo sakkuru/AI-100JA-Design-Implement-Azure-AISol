@@ -50,7 +50,7 @@ Microsoft Bot Framework を使用して作成されたボットは、パブリ�
 
 1. デプロイされたら、新しい Azure Web アプリボットリソースに移動します。
 
-1. 左側のメニューの「**ボット管理**」配下の、「**設定**」をクリックします
+1. 左側のメニューの「**設定**」配下の、「**Configuration**」をクリックします
 
 1. 「**Microsoft App ID**」の「**管理**」リンクをクリックします
 
@@ -66,9 +66,9 @@ Microsoft Bot Framework を使用して作成されたボットは、パブリ�
 
 1. シークレットをメモ帳などに記録し、後でラボで使用できるようにします。
 
-1. 「**概要**」をクリックし、アプリケーション ID をメモ帳などに記録します。
+1. 「**概要**」をクリックし、**アプリケーション ID** をメモ帳などに記録します。
 
-1. 「**Webアプリボット**」リソースに戻り、「**ボット管理**」の下の「**Webチャットでテスト**」タブを選択します
+1. 「**Webアプリボット**」リソースに戻り、「**設定**」の下の「**Webチャットでテスト**」タブを選択します
 
 1. 起動したら、何ができるかを調べます。  ご覧のとおり、メッセージをエコー バックするだけです。
 
@@ -106,7 +106,7 @@ Microsoft Bot Framework を使用して作成されたボットは、パブリ�
     }
     ```
 
-1. **Bots / Echobot.cs** ファイルを右クリックし、[**名前の変更**]を選択して、クラス ファイルの名前を **PictureBot.cs** に変更します。
+1. **Bots / EchoBot.cs** ファイルを右クリックし、[**名前の変更**]を選択して、クラス ファイルの名前を **PictureBot.cs** に変更します。
 
     Visual Studio のソリューション/プロジェクトの名前を変更することは、きわめて注意を要する作業です。**慎重に**タスクを行って、すべての名前に EchoBot の代わりに PictureBot が反映される状態にしてください。
 
@@ -127,6 +127,8 @@ Microsoft Bot Framework を使用して作成されたボットは、パブリ�
     * Microsoft.Bot.Builder.Integration.AspNet.Core
     * Azure.AI.TextAnalytics
 
+=======
+
 1. ソリューションをビルドします。
 
     >**ヒント**:  モニターが 1 台だけの場合に、手順の説明と Visual Studio を簡単に切り替えられるように、手順ファイルを Visual Studio ソリューションに追加できます。それには、ソリューション エクスプローラーでプロジェクトを右クリックし、**「追加」 > 「既存の項目」** を選択します。「Lab3」に移動し、種類が 「MD ファイル」 のすべてのファイルを追加します。
@@ -143,6 +145,8 @@ Microsoft Bot Framework を使用して作成されたボットは、パブリ�
 1. **PictureBot.cs** ファイルを開きます。  
 
 1. `OnMessageActivityAsync` メソッドを確認します。このメソッドは、会話のたびに呼び出されます。このことが重要である理由は後で分かりますが、ここでは OnMessageActivityAsync がすべてのターンで呼び出されることを覚えておいてください。
+
+1. ツールバーで **IIS Express** が選択されている場合には、**EchoBot** を選択してください。
 
 1. **F5**を押してデバッグを開始します。
 
@@ -165,7 +169,7 @@ Microsoft Bot Framework を使用して作成されたボットは、パブリ�
 
 * 名前に「**PictureBot**」と入力します
 
-* Web ページに表示される URL を入力します。
+* Endpoint url に、先ほどのWeb ページに表示されている URL をコピーして、**https://<your_bots_hostname>/api/messages** という形式で入力します。
 
 * appsettings.json に入力した AppId と App Secret を入力します
 
@@ -210,6 +214,8 @@ Microsoft Bot Framework を使用して作成されたボットは、パブリ�
     using Microsoft.Bot.Connector.Authentication;
     using Microsoft.Extensions.Options;
     using Microsoft.Extensions.Logging;
+
+=======
 
     using Microsoft.Bot.Builder.AI.Luis;
     using Microsoft.Bot.Builder.Dialogs;
